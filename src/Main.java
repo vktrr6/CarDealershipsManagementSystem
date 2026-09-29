@@ -7,7 +7,7 @@ public class Main {
 
         ArrayList<Dealership> dealerships = new ArrayList<>();
 
-//        Dealership dealership1 = new Dealership("AutoHouse Plovdiv", "Plovdiv");
+//        Dealership dealership1 = new Dealership("AutoHouse", "Plovdiv");
 //        dealerships.add(dealership1);
 //
 //        Car car1 = new Car("BMW", "3", 2020, "Diesel");
@@ -33,18 +33,58 @@ public class Main {
 //        Car car6 = new Car("BMW", "2", 2007, "Diesel");
 //
 //        dealership3.addCar(car6);
-//
+
 //        showAllDealerships(dealerships);
+//
+//        showDealership(dealerships, 2);
 //
 //        searchByCity(dealerships, "Plovdiv");
 //
 //        searchByName(dealerships, "AutoMotors Stara Zagora");
+
+//        changeDealershipsName(dealerships, 2, "MotorRepairs SZ");
+//
+//        changeDealershipsCity(dealerships, 1, "Sofia");
+
+//        removeDealership(dealerships, 1);
+    }
+
+    public static void addDealership(ArrayList<Dealership> dealerships, String name, String city) {
+
+        Dealership dealership = new Dealership(name, city);
+        dealerships.add(dealership);
     }
 
     public static void showAllDealerships(ArrayList<Dealership> dealerships) {
 
         for (Dealership dealership : dealerships) {
             System.out.println(dealership.toString());
+        }
+    }
+
+    public static void showDealership(ArrayList<Dealership> dealerships, int id) {
+
+        for (Dealership dealership : dealerships) {
+
+            if (dealership.getId() == id) {
+
+                System.out.printf("%s - %s: \n", dealership.getName(), dealership.getCity());
+
+                for (Car car : dealership.getCars()) {
+
+                    System.out.println(car.toString());
+                }
+            }
+        }
+    }
+
+    public static void searchByName(ArrayList<Dealership> dealerships, String name) {
+
+        for (Dealership dealership : dealerships) {
+
+            if (dealership.getName().equals(name)) {
+                System.out.println(dealership.toString());
+            }
         }
     }
 
@@ -58,13 +98,30 @@ public class Main {
         }
     }
 
-    public static void searchByName(ArrayList<Dealership> dealerships, String name) {
+    public static void changeDealershipsName(ArrayList<Dealership> dealerships, int id, String name) {
 
         for (Dealership dealership : dealerships) {
 
-            if (dealership.getName().equals(name)) {
-                System.out.println(dealership.toString());
+            if (dealership.getId() == id) {
+
+                dealership.setName(name);
             }
         }
+    }
+
+    public static void changeDealershipsCity(ArrayList<Dealership> dealerships, int id, String city) {
+
+        for (Dealership dealership : dealerships) {
+
+            if (dealership.getId() == id) {
+
+                dealership.setCity(city);
+            }
+        }
+    }
+
+    public static void removeDealership(ArrayList<Dealership> dealerships, int id) {
+
+        dealerships.removeIf(d -> d.getId() == id);
     }
 }

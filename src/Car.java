@@ -11,4 +11,9 @@ public class Car {
         this.year = year;
         this.fuelType = fuelType;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s - %d - %s", brand, model, year, fuelType);
+    }
 }
