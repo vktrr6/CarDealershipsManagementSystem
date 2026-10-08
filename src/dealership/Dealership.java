@@ -1,4 +1,9 @@
+package dealership;
+
+import cars.Car;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Dealership {
 
@@ -7,7 +12,7 @@ public class Dealership {
     private int id;
     private String name;
     private String city;
-    private ArrayList<Car> cars;
+    private List<Car> cars;
 
     public Dealership(String name, String city) {
         this.id = nextId++;
@@ -31,7 +36,7 @@ public class Dealership {
         return city;
     }
 
-    public ArrayList<Car> getCars() {
+    public List<Car> getCars() {
         return cars;
     }
 
@@ -44,12 +49,6 @@ public class Dealership {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-
-
-    public void addCar(Car car) {
-        cars.add(car);
     }
 
 
