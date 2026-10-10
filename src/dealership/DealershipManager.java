@@ -17,7 +17,7 @@ public class DealershipManager {
         dealerships.add(dealership);
     }
 
-    public void showAll() {
+    public void printAll() {
 
         for (Dealership dealership : dealerships) {
             System.out.println(dealership.toString());

@@ -5,6 +5,7 @@ import cars.CarManager;
 import dealership.Dealership;
 import dealership.DealershipManager;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,5 +54,101 @@ public class TestDriveManager {
         TestDrive testDrive = new TestDrive(clientName, userCar, userDealership, userStartTime, userEndTime);
 
         testDrivesStorage.add(testDrive);
+    }
+
+    public TestDrive search(int id) {
+
+        for (TestDrive testDrive : testDrivesStorage) {
+            if (testDrive.getId() == id) {
+                return testDrive;
+            }
+        }
+
+        return null;
+    }
+
+    public void print(int id) {
+
+        TestDrive testDrive = search(id);
+
+        if  (testDrive == null) {
+            throw new NullPointerException("TestDrive not found");
+        }
+
+        System.out.println(testDrive.toString());
+    }
+
+    public void printAll() {
+
+        for (TestDrive testDrive : testDrivesStorage) {
+            System.out.println(testDrive.toString());
+        }
+    }
+
+    public List<TestDrive> searchByCar(Car car) {
+
+        List<TestDrive> result = new ArrayList<>();
+
+        for (TestDrive testDrive : testDrivesStorage) {
+
+            if (testDrive.getCar().getId() == car.getId()) {
+                result.add(testDrive);
+            }
+        }
+
+        return result;
+    }
+
+    public List<TestDrive> searchByDealership(Dealership dealership) {
+
+        List<TestDrive> result = new ArrayList<>();
+
+        for (TestDrive testDrive : testDrivesStorage) {
+
+            if (testDrive.getDealership().getId() == dealership.getId()) {
+                result.add(testDrive);
+            }
+        }
+
+        return result;
+    }
+
+    public List<TestDrive> searchByClientName(String clientName) {
+
+        List<TestDrive> result = new ArrayList<>();
+
+        for (TestDrive testDrive : testDrivesStorage) {
+
+            if (testDrive.getClientName().equals(clientName)) {
+                result.add(testDrive);
+            }
+        }
+
+        return result;
+    }
+
+    public List<TestDrive> searchByDate(LocalDate searchedDate) {
+
+        List<TestDrive> result = new ArrayList<>();
+
+        for (TestDrive testDrive : testDrivesStorage) {
+
+            LocalDate date = testDrive.getStartTime().toLocalDate();
+
+            if (date.equals(searchedDate)) {
+                result.add(testDrive);
+            }
+        }
+
+        return result;
+    }
+
+    public void remove(int id) {
+
+        boolean removed = testDrivesStorage.removeIf(t -> t.getId() == id);
+
+        if (!removed) {
+            throw new NoSuchElementException("TestDrive not found");
+        }
     }
 }

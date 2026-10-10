@@ -74,4 +74,11 @@ public class TestDrive {
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
+
+
+
+    @Override
+    public String toString() {
+        return String.format("Client %s has a test drive with ID: %d. in %s with %s from %s to %s.",clientName, id, dealership.getName(), car.toString(), startTime, endTime);
+    }
 }
