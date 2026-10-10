@@ -8,37 +8,50 @@ import dealership.DealershipManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class TestDriveManager {
 
-    private CarManager carManager = new CarManager();
     private DealershipManager dealershipManager = new DealershipManager();
+    private CarManager carManager = new CarManager();
 
     List<TestDrive> testDrivesStorage = new ArrayList<>();
 
 
 
-    public void add(int carId, int dealershipId, LocalDateTime testDriveStartDateTime, LocalDateTime testDriveEndDateTime) throws Exception {
+    public void add(String clientName, int dealershipId, int carId, LocalDateTime userStartTime, LocalDateTime userEndTime) {
 
-       List<Car> carsStorage = carManager.getAll();
-       List<Dealership> dealershipsStorage = dealershipManager.getAll();
+        List<Dealership> dealershipsStorage = dealershipManager.getAll();
+        List<Car> carsStorage = carManager.getAll();
 
-       Car userCar = carsStorage.stream().filter(c -> c.getId() == carId).findFirst().orElseThrow();
-       Dealership userDealership = dealershipsStorage.stream().filter(d -> d.getId() == dealershipId).findFirst().orElseThrow();
+       Dealership userDealership = dealershipsStorage.stream().filter(d -> d.getId() == dealershipId).findFirst().orElseThrow(() -> new NoSuchElementException("Car not found"));
+       Car userCar = carsStorage.stream().filter(c -> c.getId() == carId).findFirst().orElseThrow(() -> new NoSuchElementException("Car not found"));
 
-        // check if the car is available in the car list of the dealership with id = dealershipId
+       boolean hasCar = userDealership.getCars().contains(userCar);
 
-        //check if the userCar is contained in the list of the userDealership cars
-        //extract the dealership cars this way:
-        //dealership.getCars();
-        //if present continue, else throw exception
+       if (!hasCar) {
+           System.out.println("Car not found");
+           return;
+       }
 
-        //traverse testDrivesStorage
-        // filter all test drives where the car is our userCar
-        // and check if the useCar is available for the period
+       if (!userStartTime.isBefore(userEndTime)) {
 
-        TestDrive first = testDrivesStorage.getFirst();
-        boolean isTestDriveStartTimeAfterTheRequested = first.getStartTime().isAfter(testDriveEndDateTime);
+           System.out.println("Invalid interval");
+           return;
+       }
 
+        boolean isAvailable = testDrivesStorage.stream()
+                .filter(t -> t.getCar().getId() == carId)
+                .noneMatch(t -> userStartTime.isBefore(t.getEndTime()) && userEndTime.isAfter(t.getStartTime()));
+
+        if (!isAvailable) {
+
+            System.out.println("Car is already booked");
+            return;
+        }
+
+        TestDrive testDrive = new TestDrive(clientName, userCar, userDealership, userStartTime, userEndTime);
+
+        testDrivesStorage.add(testDrive);
     }
 }
