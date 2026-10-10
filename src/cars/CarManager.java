@@ -1,6 +1,7 @@
 package cars;
 
 import dealership.Dealership;
+import testdrive.TestDrive;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -135,10 +136,12 @@ public class CarManager {
         car.setFuelType(fuelType);
     }
 
-    public void remove(int id, Dealership dealership) {
+    public void remove(int id, Dealership dealership, List<TestDrive> testDrivesStorage) {
 
-        boolean removedDealer = dealership.getCars().removeIf(c -> c.getId() == id);
-        boolean removedCar = carsStorage.removeIf(c -> c.getId() == id);
+        boolean hasTestDrives = testDrivesStorage.stream().anyMatch(t -> t.getCar().getId() == id);
+
+        boolean removedDealer = dealership.getCars().removeIf(c -> c.getId() == id && !hasTestDrives);
+        boolean removedCar = carsStorage.removeIf(c -> c.getId() == id && !hasTestDrives);
 
         if (!removedDealer && !removedCar) {
             throw new NoSuchElementException("Car not found");
