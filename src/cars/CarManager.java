@@ -2,8 +2,10 @@ package cars;
 
 import dealership.Dealership;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class CarManager {
 
@@ -75,42 +77,72 @@ public class CarManager {
 
         Car car = search(id);
 
-        if (car != null) {
-            car.setBrand(brand);
+        if (car == null) {
+            throw new NoSuchElementException("Car does not exist");
         }
+
+        if (brand == null) {
+            throw new IllegalArgumentException("Brand cannot be null");
+        }
+
+        car.setBrand(brand);
     }
 
     public void editModel(int id, String model) {
 
         Car car = search(id);
 
-        if (car != null) {
-            car.setModel(model);
+        if (car == null) {
+            throw new NoSuchElementException("Car does not exist");
         }
+
+        if (model == null) {
+            throw new IllegalArgumentException("Model cannot be null");
+        }
+
+        car.setModel(model);
     }
 
     public void editYear(int id, int year) {
 
         Car car = search(id);
 
-        if (car != null) {
-            car.setYear(year);
+        if (car == null) {
+            throw new NoSuchElementException("Car does not exist");
         }
+
+        int currentYear = LocalDate.now().getYear();
+
+        if (year < 1900 || year <= currentYear) {
+            throw new IllegalArgumentException("Year cannot be before 1900 or after " + currentYear);
+        }
+
+        car.setYear(year);
     }
 
     public void editFuelType(int id, String fuelType) {
 
         Car car = search(id);
 
-        if (car != null) {
-            car.setFuelType(fuelType);
+        if (car == null) {
+            throw new NoSuchElementException("Car does not exist");
         }
+
+        if (fuelType == null) {
+            throw new IllegalArgumentException("fuelType cannot be null");
+        }
+
+        car.setFuelType(fuelType);
     }
 
     public void remove(int id, Dealership dealership) {
 
-        dealership.getCars().removeIf(c -> c.getId() == id);
-        carsStorage.removeIf(c -> c.getId() == id);
+        boolean removedDealer = dealership.getCars().removeIf(c -> c.getId() == id);
+        boolean removedCar = carsStorage.removeIf(c -> c.getId() == id);
+
+        if (!removedDealer && !removedCar) {
+            throw new NoSuchElementException("Car not found");
+        }
     }
 
     public List<Car> getAll() {

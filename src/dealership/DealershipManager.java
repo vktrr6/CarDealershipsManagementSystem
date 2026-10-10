@@ -4,6 +4,7 @@ import cars.Car;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class DealershipManager {
 
@@ -23,18 +24,18 @@ public class DealershipManager {
         }
     }
 
-    public void show(int id) {
+    public void print(int id) {
 
-        for (Dealership dealership : dealerships) {
+        Dealership dealership = search(id);
 
-            if (dealership.getId() == id) {
-
-                System.out.printf("%s - %s: \n", dealership.getName(), dealership.getCity());
-
-                for (Car car : dealership.getCars()) {
-                    System.out.println(car.toString());
-                }
+            if (dealership == null) {
+                throw new NullPointerException("Dealership not found");
             }
+
+        System.out.printf("%s - %s: %n", dealership.getName(), dealership.getCity());
+
+        for (Car car : dealership.getCars()) {
+            System.out.println(car.toString());
         }
     }
 
@@ -82,23 +83,39 @@ public class DealershipManager {
 
         Dealership dealership = search(id);
 
-        if (dealership != null) {
-            dealership.setName(name);
+        if (dealership == null) {
+            throw new NoSuchElementException("Dealership not found");
         }
+
+        if (name == null) {
+            throw new IllegalArgumentException("Name cannot be null");
+        }
+
+        dealership.setName(name);
     }
 
     public void editCity(int id, String city) {
 
         Dealership dealership = search(id);
 
-        if (dealership != null) {
-            dealership.setCity(city);
+        if (dealership == null) {
+            throw new NoSuchElementException("Dealership not found");
         }
+
+        if (city == null) {
+            throw new IllegalArgumentException("City cannot be null");
+        }
+
+        dealership.setCity(city);
     }
 
     public void remove(int id) {
 
-        dealerships.removeIf(d -> d.getId() == id);
+        boolean removed = dealerships.removeIf(d -> d.getId() == id);
+
+        if (!removed) {
+            throw new NoSuchElementException("Dealership not found");
+        }
     }
 
     public List<Dealership> getAll() {

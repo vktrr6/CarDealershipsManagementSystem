@@ -26,36 +26,19 @@ public class TestDriveManager {
        Car userCar = carsStorage.stream().filter(c -> c.getId() == carId).findFirst().orElseThrow();
        Dealership userDealership = dealershipsStorage.stream().filter(d -> d.getId() == dealershipId).findFirst().orElseThrow();
 
-
-
         // check if the car is available in the car list of the dealership with id = dealershipId
-
 
         //check if the userCar is contained in the list of the userDealership cars
         //extract the dealership cars this way:
         //dealership.getCars();
         //if present continue, else throw exception
 
-        //how to throw exception
-        //checked and unchecked exceptions
-        //exception hierarchy
-//        if (1==2){
-//
-//        }else{
-//            throw new Exception("1 is not 2");
-//        }
-
         //traverse testDrivesStorage
         // filter all test drives where the car is our userCar
         // and check if the useCar is available for the period
 
         TestDrive first = testDrivesStorage.getFirst();
-        //example check:
         boolean isTestDriveStartTimeAfterTheRequested = first.getStartTime().isAfter(testDriveEndDateTime);
-
-
-
-
 
     }
 }
