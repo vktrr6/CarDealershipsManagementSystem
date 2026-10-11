@@ -83,6 +83,8 @@ public class TestDriveManager {
         for (TestDrive testDrive : testDrivesStorage) {
             System.out.println(testDrive.toString());
         }
+
+        System.out.println();
     }
 
     public List<TestDrive> searchByCar(Car car) {

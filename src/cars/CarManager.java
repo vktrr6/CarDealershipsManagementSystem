@@ -1,6 +1,7 @@
 package cars;
 
 import dealership.Dealership;
+import dealership.DealershipManager;
 import testdrive.TestDrive;
 
 import java.time.LocalDate;
@@ -14,10 +15,27 @@ public class CarManager {
 
 
 
-    public void add(Car car, Dealership dealership) {
+    public void add(Car car) {
 
-        dealership.getCars().add(car);
         carsStorage.add(car);
+    }
+
+    public void addToDealership(int carId, int dealershipId) {
+
+        DealershipManager dealershipManager = new DealershipManager();
+
+        carsStorage.stream()
+                .filter(car -> car.getId() == carId)
+                .forEach(car -> dealershipManager.addCar(dealershipId, car));
+    }
+
+    public void removeFromDealership(int carId, int dealershipId) {
+
+        DealershipManager dealershipManager = new DealershipManager();
+
+        carsStorage.stream()
+                .filter(car -> car.getId() == carId)
+                .forEach(car -> dealershipManager.removeCar(dealershipId, car));
     }
 
     public Car search(int id) {

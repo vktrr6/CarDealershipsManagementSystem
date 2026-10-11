@@ -1,6 +1,9 @@
 import cars.Car;
+import cars.CarManager;
 import dealership.Dealership;
+import dealership.DealershipManager;
 import testdrive.TestDrive;
+import testdrive.TestDriveManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +13,12 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        List<Dealership> dealerships = new ArrayList<>();
-        List<Car> cars = new ArrayList<>();
-        List<TestDrive> testDrive = new ArrayList<>();
+        //Managers
+        DealershipManager dealershipManager = new DealershipManager();
+        CarManager carManager = new CarManager();
+        TestDriveManager testDriveManager = new TestDriveManager();
+
+
 
         boolean isRunning = true;
 
@@ -24,7 +30,10 @@ public class Main {
 
             switch (command) {
 
-                case 0 -> isRunning = false;
+                case 0 -> {
+                    System.out.println("Напускане на програмата...");
+                    isRunning = false;
+                }
 
                 case 1 -> {
 
@@ -32,29 +41,146 @@ public class Main {
 
                     while (dealershipMenu) {
 
+                        System.out.println();
+
                         dealershipMenu();
 
                         command = Integer.parseInt(scanner.nextLine());
 
                         switch (command) {
-
+                            //back
                             case 0 -> dealershipMenu = false;
+                            //add
+                            case 1 -> {
 
-                            case 1 -> {}
+                                System.out.print("Въведете име на автосалона: ");
+                                String dealershipName = scanner.nextLine();
 
-                            case 2 -> {}
+                                System.out.print("Въведете град на автосалона: ");
+                                String dealershipCity = scanner.nextLine();
 
-                            case 3 -> {}
+                                Dealership dealership = new Dealership(dealershipName, dealershipCity);
+                                dealershipManager.add(dealership);
+                            }
+                            //printAll
+                            case 2 -> {
+                                dealershipManager.printAll();
+                            }
+                            //search
+                            case 3 -> {
 
-                            case 4 -> {}
+                                System.out.print("Въведете ID на автосалона: ");
+                                int id = Integer.parseInt(scanner.nextLine());
 
-                            case 5 -> {}
+                                dealershipManager.print(id);
+                            }
+                            //searchByName/City
+                            case 4 -> {
 
-                            case 6 -> {}
+                                System.out.print(
+                                        "По какво искате да търсите:\n" +
+                                        "1. По име\n" +
+                                        "2. По град\n" +
+                                        "\n" +
+                                        "Изберете опция: ");
 
-                            case 7 -> {}
+                                int option = Integer.parseInt(scanner.nextLine());
 
-                            case 8 -> {}
+                                switch (option) {
+
+                                    case 1 -> {
+
+                                        System.out.print("Въведете име: ");
+                                        String dealershipName = scanner.nextLine();
+
+                                        List<Dealership> result = dealershipManager.searchByName(dealershipName);
+
+                                        for (Dealership dealership : result) {
+                                            System.out.println(dealership.toString());
+                                        }
+                                    }
+
+                                    case 2 -> {
+
+                                        System.out.print("Въведете град: ");
+                                        String dealershipCity = scanner.nextLine();
+
+                                        dealershipManager.searchByName(dealershipCity);
+
+                                        List<Dealership> result = dealershipManager.searchByCity(dealershipCity);
+
+                                        for (Dealership dealership : result) {
+                                            System.out.println(dealership.toString());
+                                        }
+                                    }
+                                }
+                            }
+                            //edit
+                            case 5 -> {
+
+                                System.out.print("Въведете ID на автосалона: ");
+                                int id = Integer.parseInt(scanner.nextLine());
+
+                                dealershipManager.print(id);
+
+                                System.out.print(
+                                        "Какво искате да промените:\n" +
+                                        "1. Име\n" +
+                                        "2. Град\n" +
+                                        "\n" +
+                                        "Изберете опция: ");
+
+                                int option = Integer.parseInt(scanner.nextLine());
+
+                                switch (option) {
+
+                                    case 1 -> {
+
+                                        System.out.print("Въведете ново име: ");
+                                        String dealershipName = scanner.nextLine();
+
+                                        dealershipManager.editName(id, dealershipName);
+                                    }
+
+                                    case 2 -> {
+
+                                        System.out.print("Въведете нов град: ");
+                                        String dealershipCity = scanner.nextLine();
+
+                                        dealershipManager.editName(id, dealershipCity);
+                                    }
+                                }
+                            }
+                            //remove
+                            case 6 -> {
+
+                                System.out.print("Въведете ID на автосалона: ");
+                                int id = Integer.parseInt(scanner.nextLine());
+
+                                dealershipManager.remove(id);
+                            }
+                            //addCarToDealership
+                            case 7 -> {
+
+                                System.out.print("Въведете ID на колата: ");
+                                int carId = Integer.parseInt(scanner.nextLine());
+
+                                System.out.print("Въведете ID на салона: ");
+                                int dealershipId = Integer.parseInt(scanner.nextLine());
+
+                                carManager.addToDealership(carId, dealershipId);
+                            }
+                            //removeCarFromDealership
+                            case 8 -> {
+
+                                System.out.print("Въведете ID на колата: ");
+                                int carId = Integer.parseInt(scanner.nextLine());
+
+                                System.out.print("Въведете ID на салона: ");
+                                int dealershipId = Integer.parseInt(scanner.nextLine());
+
+                                carManager.removeFromDealership(carId, dealershipId);
+                            }
                         }
                     }
                 }
@@ -70,17 +196,17 @@ public class Main {
                         command = Integer.parseInt(scanner.nextLine());
 
                         switch (command) {
-
+                            //back
                             case 0 -> carsMenu = false;
-
+                            //add
                             case 1 -> {}
-
+                            //printAll
                             case 2 -> {}
-
+                            //search
                             case 3 -> {}
-
+                            //edit
                             case 4 -> {}
-
+                            //remove
                             case 5 -> {}
                         }
                     }
@@ -123,7 +249,7 @@ public class Main {
     }
 
     private static void mainMenu() {
-        System.out.println(
+        System.out.print(
                 "================================\n" +
                 "     AUTO DEALERSHIP SYSTEM\n" +
                 "================================\n" +
@@ -138,7 +264,7 @@ public class Main {
     }
 
     private static void dealershipMenu() {
-        System.out.println(
+        System.out.print(
                 "===== АВТОСАЛОНИ =====\n" +
                 "\n" +
                 "1. Добави автосалон\n" +
@@ -155,7 +281,7 @@ public class Main {
     }
 
     public static void carsMenu() {
-        System.out.println(
+        System.out.print(
                 "===== АВТОМОБИЛИ =====\n" +
                 "\n" +
                 "1. Добави автомобил\n" +
@@ -169,7 +295,7 @@ public class Main {
     }
 
     public static void testDriveMenu() {
-        System.out.println("" +
+        System.out.print(
                 "===== ТЕСТ-ДРАЙВОВЕ =====\n" +
                 "\n" +
                 "1. Добави тест-драйв\n" +
@@ -182,4 +308,6 @@ public class Main {
                 "\n" +
                 "Изберете опция: ");
     }
+
+    public static void reference() {}
 }

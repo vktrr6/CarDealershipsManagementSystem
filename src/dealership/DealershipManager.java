@@ -8,20 +8,32 @@ import java.util.NoSuchElementException;
 
 public class DealershipManager {
 
-    private List<Dealership> dealerships = new ArrayList<>();
+    private List<Dealership> dealershipsStorage = new ArrayList<>();
 
 
 
     public void add(Dealership dealership) {
 
-        dealerships.add(dealership);
+        dealershipsStorage.add(dealership);
+    }
+
+    public void addCar(int dealershipId, Car car) {
+
+        search(dealershipId).getCars().add(car);
+    }
+
+    public void removeCar(int dealershipId, Car car) {
+
+        search(dealershipId).getCars().remove(car);
     }
 
     public void printAll() {
 
-        for (Dealership dealership : dealerships) {
+        for (Dealership dealership : dealershipsStorage) {
             System.out.println(dealership.toString());
         }
+
+        System.out.println();
     }
 
     public void print(int id) {
@@ -41,7 +53,7 @@ public class DealershipManager {
 
     public Dealership search(int id) {
 
-        for (Dealership dealership : dealerships) {
+        for (Dealership dealership : dealershipsStorage) {
 
             if (dealership.getId() == id) {
                 return dealership;
@@ -55,7 +67,7 @@ public class DealershipManager {
 
         List<Dealership> result = new ArrayList<>();
 
-        for (Dealership dealership : dealerships) {
+        for (Dealership dealership : dealershipsStorage) {
 
             if (dealership.getName().equals(name)) {
                 result.add(dealership);
@@ -69,7 +81,7 @@ public class DealershipManager {
 
         List<Dealership> result = new ArrayList<>();
 
-        for (Dealership dealership : dealerships) {
+        for (Dealership dealership : dealershipsStorage) {
 
             if (dealership.getCity().equals(city)) {
                 result.add(dealership);
@@ -111,7 +123,7 @@ public class DealershipManager {
 
     public void remove(int id) {
 
-        boolean removed = dealerships.removeIf(d -> d.getId() == id);
+        boolean removed = dealershipsStorage.removeIf(d -> d.getId() == id);
 
         if (!removed) {
             throw new NoSuchElementException("Dealership not found");
@@ -120,6 +132,6 @@ public class DealershipManager {
 
     public List<Dealership> getAll() {
 
-        return dealerships;
+        return dealershipsStorage;
     }
 }
