@@ -38,6 +38,25 @@ public class CarManager {
                 .forEach(car -> dealershipManager.removeCar(dealershipId, car));
     }
 
+    public void printAll() {
+
+        for (Car car : carsStorage) {
+            System.out.println(car.toString());
+        }
+
+        System.out.println();
+    }
+
+    public void print(int id) {
+
+        for (Car car : carsStorage) {
+
+            if (car.getId() == id) {
+                System.out.println(car.toString());
+            }
+        }
+    }
+
     public Car search(int id) {
 
         for (Car car : carsStorage) {

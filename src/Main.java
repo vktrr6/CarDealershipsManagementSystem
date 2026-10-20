@@ -2,10 +2,8 @@ import cars.Car;
 import cars.CarManager;
 import dealership.Dealership;
 import dealership.DealershipManager;
-import testdrive.TestDrive;
 import testdrive.TestDriveManager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -30,11 +28,13 @@ public class Main {
 
             switch (command) {
 
+                //back
                 case 0 -> {
                     System.out.println("Напускане на програмата...");
                     isRunning = false;
                 }
 
+                //dealershipMenu
                 case 1 -> {
 
                     boolean dealershipMenu = true;
@@ -48,8 +48,10 @@ public class Main {
                         command = Integer.parseInt(scanner.nextLine());
 
                         switch (command) {
+
                             //back
                             case 0 -> dealershipMenu = false;
+
                             //add
                             case 1 -> {
 
@@ -60,12 +62,15 @@ public class Main {
                                 String dealershipCity = scanner.nextLine();
 
                                 Dealership dealership = new Dealership(dealershipName, dealershipCity);
+
                                 dealershipManager.add(dealership);
                             }
+
                             //printAll
                             case 2 -> {
                                 dealershipManager.printAll();
                             }
+
                             //search
                             case 3 -> {
 
@@ -74,6 +79,7 @@ public class Main {
 
                                 dealershipManager.print(id);
                             }
+
                             //searchByName/City
                             case 4 -> {
 
@@ -115,50 +121,74 @@ public class Main {
                                     }
                                 }
                             }
+
                             //edit
                             case 5 -> {
 
                                 System.out.print("Въведете ID на автосалона: ");
                                 int id = Integer.parseInt(scanner.nextLine());
 
+                                System.out.print("Избрахте този автосалон: ");
                                 dealershipManager.print(id);
 
                                 System.out.print(
-                                        "Какво искате да промените:\n" +
-                                        "1. Име\n" +
-                                        "2. Град\n" +
+                                        "Искате ли да продължите:\n" +
+                                        "1. Да\n" +
+                                        "2. Не" +
                                         "\n" +
                                         "Изберете опция: ");
 
-                                int option = Integer.parseInt(scanner.nextLine());
+                                int yesNo = Integer.parseInt(scanner.nextLine());
 
-                                switch (option) {
+                                switch (yesNo) {
 
                                     case 1 -> {
 
-                                        System.out.print("Въведете ново име: ");
-                                        String dealershipName = scanner.nextLine();
+                                        System.out.print(
+                                                "Какво искате да промените:\n" +
+                                                "1. Име\n" +
+                                                "2. Град\n" +
+                                                "\n" +
+                                                "Изберете опция: ");
 
-                                        dealershipManager.editName(id, dealershipName);
+                                        int option = Integer.parseInt(scanner.nextLine());
+
+                                        switch (option) {
+
+                                            case 1 -> {
+
+                                                System.out.print("Въведете ново име: ");
+                                                String dealershipName = scanner.nextLine();
+
+                                                dealershipManager.editName(id, dealershipName);
+                                            }
+
+                                            case 2 -> {
+
+                                                System.out.print("Въведете нов град: ");
+                                                String dealershipCity = scanner.nextLine();
+
+                                                dealershipManager.editCity(id, dealershipCity);
+                                            }
+                                        }
                                     }
 
-                                    case 2 -> {
-
-                                        System.out.print("Въведете нов град: ");
-                                        String dealershipCity = scanner.nextLine();
-
-                                        dealershipManager.editName(id, dealershipCity);
-                                    }
+                                    case 2 -> {}
                                 }
                             }
+
                             //remove
                             case 6 -> {
 
                                 System.out.print("Въведете ID на автосалона: ");
                                 int id = Integer.parseInt(scanner.nextLine());
 
+                                System.out.print("Избрахте този автосалон: ");
+                                dealershipManager.print(id);
+
                                 dealershipManager.remove(id);
                             }
+
                             //addCarToDealership
                             case 7 -> {
 
@@ -170,6 +200,7 @@ public class Main {
 
                                 carManager.addToDealership(carId, dealershipId);
                             }
+
                             //removeCarFromDealership
                             case 8 -> {
 
@@ -185,6 +216,7 @@ public class Main {
                     }
                 }
 
+                //carMenu
                 case 2 -> {
 
                     boolean carsMenu = true;
@@ -196,22 +228,174 @@ public class Main {
                         command = Integer.parseInt(scanner.nextLine());
 
                         switch (command) {
+
                             //back
                             case 0 -> carsMenu = false;
+
                             //add
-                            case 1 -> {}
+                            case 1 -> {
+
+                                System.out.print("Въведете бранда на колата: ");
+                                String carBrand = scanner.nextLine();
+
+                                System.out.print("Въведете модела на колата: ");
+                                String carModel = scanner.nextLine();
+
+                                System.out.print("Въведете годината на колата: ");
+                                int carYear = Integer.parseInt(scanner.nextLine());
+
+                                System.out.print("Въведете типа гориво на автосалона: ");
+                                String carFuelType = scanner.nextLine();
+
+                                System.out.println("В кой салон искате да я вкарате\n" + "Въведете ID на автосалона: ");
+                                int dealershipId = Integer.parseInt(scanner.nextLine());
+
+                                Car car = new Car(carBrand, carModel, carYear, carFuelType);
+
+                                carManager.add(car);
+                                carManager.addToDealership(car.getId(), dealershipId);
+                            }
+
                             //printAll
-                            case 2 -> {}
-                            //search
-                            case 3 -> {}
+                            case 2 -> {
+                                carManager.printAll();
+                            }
+
+                            //searchByBrand/Model/Year
+                            case 3 -> {
+
+                                System.out.print(
+                                        "По какво искате да търсите:\n" +
+                                        "1. По бранд\n" +
+                                        "2. По модел\n" +
+                                        "2. По година\n" +
+                                        "\n" +
+                                        "Изберете опция: ");
+
+                                int option = Integer.parseInt(scanner.nextLine());
+
+                                switch (option) {
+
+                                    case 1 -> {
+
+                                        System.out.print("Въведете бранд: ");
+                                        String carBrand = scanner.nextLine();
+
+                                        List<Car> result = carManager.searchByBrand(carBrand);
+
+                                        for (Car car : result) {
+                                            System.out.println(car.toString());
+                                        }
+                                    }
+
+                                    case 2 -> {
+
+                                        System.out.print("Въведете модел: ");
+                                        String carModel = scanner.nextLine();
+
+                                        List<Car> result = carManager.searchByModel(carModel);
+
+                                        for (Car car : result) {
+                                            System.out.println(car.toString());
+                                        }
+                                    }
+
+                                    case 3 -> {
+
+                                        System.out.print("Въведете година: ");
+                                        int carYear = Integer.parseInt(scanner.nextLine());
+
+                                        List<Car> result = carManager.searchByYear(carYear);
+
+                                        for (Car car : result) {
+                                            System.out.println(car.toString());
+                                        }
+                                    }
+                                }
+                            }
+
                             //edit
-                            case 4 -> {}
+                            case 4 -> {
+
+                                System.out.print("Въведете ID на колата: ");
+                                int id = Integer.parseInt(scanner.nextLine());
+
+                                System.out.print("Избрахте тази кола: ");
+                                carManager.print(id);
+
+                                System.out.print(
+                                        "Искате ли да продължите:\n" +
+                                        "1. Да\n" +
+                                        "2. Не" +
+                                        "\n" +
+                                        "Изберете опция: ");
+
+                                int yesNo = Integer.parseInt(scanner.nextLine());
+
+                                switch (yesNo) {
+
+                                    case 1 -> {
+
+                                        System.out.print(
+                                                "Какво искате да промените:\n" +
+                                                "1. Бранд\n" +
+                                                "2. Модел\n" +
+                                                "3. Година\n" +
+                                                "4. Тип гориво\n" +
+                                                "\n" +
+                                                "Изберете опция: ");
+
+                                        int option = Integer.parseInt(scanner.nextLine());
+
+                                        switch (option) {
+
+                                            case 1 -> {
+
+                                                System.out.print("Въведете нов бранд: ");
+                                                String carBrand = scanner.nextLine();
+
+                                                carManager.editBrand(id, carBrand);
+                                            }
+
+                                            case 2 -> {
+
+                                                System.out.print("Въведете нов модел: ");
+                                                String carModel = scanner.nextLine();
+
+                                                carManager.editModel(id, carModel);
+                                            }
+
+                                            case 3 -> {
+
+                                                System.out.print("Въведете нова година: ");
+                                                int carYear = Integer.parseInt(scanner.nextLine());
+
+                                                carManager.editYear(id, carYear);
+                                            }
+
+                                            case 4 -> {
+
+                                                System.out.print("Въведете нов тип гориво: ");
+                                                String carFuelType = scanner.nextLine();
+
+                                                carManager.editFuelType(id, carFuelType);
+                                            }
+                                        }
+                                    }
+
+                                    case 2 -> {}
+                                }
+                            }
+
                             //remove
-                            case 5 -> {}
+                            case 5 -> {
+                            }
+
                         }
                     }
                 }
 
+                //testDriveMenu
                 case 3 -> {
 
                     boolean testDriveMenu = true;
@@ -241,9 +425,9 @@ public class Main {
                     }
                 }
 
-                case 4 -> {//Справки}
+                //reference
+                case 4 -> {}
 
-                }
             }
         }
     }
