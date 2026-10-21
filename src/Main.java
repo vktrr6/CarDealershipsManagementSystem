@@ -4,6 +4,8 @@ import dealership.Dealership;
 import dealership.DealershipManager;
 import testdrive.TestDriveManager;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -389,8 +391,9 @@ public class Main {
 
                             //remove
                             case 5 -> {
-                            }
 
+
+                            }
                         }
                     }
                 }
@@ -408,19 +411,148 @@ public class Main {
 
                         switch (command) {
 
+                            //back
                             case 0 -> testDriveMenu = false;
 
-                            case 1 -> {}
+                            //add
+                            case 1 -> {
 
-                            case 2 -> {}
+                                System.out.print("Въведете име на клиент: ");
+                                String clientName = scanner.nextLine();
 
-                            case 3 -> {}
+                                System.out.print("Въведете ID на автосалона, в който искате да търсите свободни коли: ");
+                                int dealershipId = Integer.parseInt(scanner.nextLine());
 
-                            case 4 -> {}
+                                System.out.print("Избрахте този автосалон: ");
+                                dealershipManager.print(dealershipId);
 
+                                System.out.print(
+                                        "Искате ли да продължите:\n" +
+                                        "1. Да\n" +
+                                        "2. Не" +
+                                        "\n" +
+                                        "Изберете опция: ");
+
+                                int yesNo = Integer.parseInt(scanner.nextLine());
+
+                                switch (yesNo) {
+
+                                    case 1 -> {
+
+                                        System.out.print("Въведете ID на автомобила, който желаете: ");
+                                        int carId = Integer.parseInt(scanner.nextLine());
+
+                                        System.out.print("Въведете начален час: ");
+                                        String input1 = scanner.nextLine();
+                                        LocalDateTime userStartTime = LocalDateTime.parse(input1);
+
+                                        System.out.print("Въведете краен час: ");
+                                        String input2 = scanner.nextLine();
+                                        LocalDateTime userEndTime = LocalDateTime.parse(input2);
+
+                                        testDriveManager.add(clientName, dealershipId, carId, userStartTime, userEndTime);
+                                    }
+
+                                    case 2 -> {}
+                                }
+                            }
+
+                            //printAll
+                            case 2 -> {
+                                testDriveManager.printAll();
+                            }
+
+                            //show
+                            case 3 -> {
+
+                                System.out.print("Въведте ID на Test Drive: ");
+                                int id = Integer.parseInt(scanner.nextLine());
+
+                                testDriveManager.print(id);
+                            }
+
+                            //searchByCar/Dealership/ClientName
+                            case 4 -> {
+
+                                System.out.print(
+                                        "По какво искате да търсите:\n" +
+                                        "1. По кола\n" +
+                                        "2. По автосалон\n" +
+                                        "3. По име на клиент\n" +
+                                        "4. По име на клиент\n" +
+                                        "\n" +
+                                        "Изберете опция: ");
+
+                                int option = Integer.parseInt(scanner.nextLine());
+
+                                switch (option) {
+
+                                    case 1 -> {
+
+                                        System.out.print("Въведете ID на колата: ");
+                                        int carId = Integer.parseInt(scanner.nextLine());
+
+                                        testDriveManager.searchByCar(carManager.search(carId));
+                                    }
+
+                                    case 2 -> {
+
+                                        System.out.print("Въведете ID на автосалона: ");
+                                        int dealershipId = Integer.parseInt(scanner.nextLine());
+
+                                        testDriveManager.searchByDealership(dealershipManager.search(dealershipId));
+                                    }
+
+                                    case 3 -> {
+
+                                        System.out.print("Въведете името на клиента: ");
+                                        String clientName = scanner.nextLine();
+
+                                        testDriveManager.searchByClientName(clientName);
+                                    }
+
+                                    case 4 -> {
+
+                                        System.out.print("Въведете дата: ");
+                                        String date = scanner.nextLine();
+                                        LocalDate searchedDate = LocalDate.parse(date);
+
+                                        testDriveManager.searchByDate(searchedDate);
+                                    }
+                                }
+                            }
+
+                            //edit
                             case 5 -> {}
 
-                            case 6 -> {}
+                            //remove
+                            case 6 -> {
+
+                                System.out.print("Въведете ID на TestDrive: ");
+                                int testDriveId = Integer.parseInt(scanner.nextLine());
+
+                                System.out.print("Избрахте този TestDrive: ");
+                                testDriveManager.print(testDriveId);
+
+                                System.out.print(
+                                        "Искате ли да продължите:\n" +
+                                                "1. Да\n" +
+                                                "2. Не" +
+                                                "\n" +
+                                                "Изберете опция: ");
+
+                                int yesNo = Integer.parseInt(scanner.nextLine());
+
+                                switch (yesNo) {
+
+                                    case 1 -> {
+
+                                        testDriveManager.remove(testDriveId);
+                                    }
+
+                                    case 2 -> {}
+                                }
+                            }
                         }
                     }
                 }
@@ -486,8 +618,7 @@ public class Main {
                 "2. Покажи всички тест-драйвове\n" +
                 "3. Покажи тест-драйв\n" +
                 "4. Търси тест-драйв\n" +
-                "5. Промени тест-драйв\n" +
-                "6. Изтрий тест-драйв\n" +
+                "5. Изтрий тест-драйв\n" +
                 "0. Назад" +
                 "\n" +
                 "Изберете опция: ");
