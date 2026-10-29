@@ -13,19 +13,26 @@ import java.util.NoSuchElementException;
 
 public class TestDriveManager {
 
-    private DealershipManager dealershipManager = new DealershipManager();
-    private CarManager carManager = new CarManager();
+    private DealershipManager dealershipManager;
+    private CarManager carManager;
 
     List<TestDrive> testDrivesStorage = new ArrayList<>();
 
+    public TestDriveManager(DealershipManager dealershipManager, CarManager carManager) {
+        this.dealershipManager = new DealershipManager();
+        this.carManager = new CarManager();
+    }
 
+    public List<TestDrive> getAll() {
+        return testDrivesStorage;
+    }
 
     public void add(String clientName, int dealershipId, int carId, LocalDateTime userStartTime, LocalDateTime userEndTime) {
 
         List<Dealership> dealershipsStorage = dealershipManager.getAll();
         List<Car> carsStorage = carManager.getAll();
 
-       Dealership userDealership = dealershipsStorage.stream().filter(d -> d.getId() == dealershipId).findFirst().orElseThrow(() -> new NoSuchElementException("Car not found"));
+       Dealership userDealership = dealershipsStorage.stream().filter(d -> d.getId() == dealershipId).findFirst().orElseThrow(() -> new NoSuchElementException("Dealership not found"));
        Car userCar = carsStorage.stream().filter(c -> c.getId() == carId).findFirst().orElseThrow(() -> new NoSuchElementException("Car not found"));
 
        boolean hasCar = userDealership.getCars().contains(userCar);
@@ -151,6 +158,53 @@ public class TestDriveManager {
 
         if (!removed) {
             throw new NoSuchElementException("TestDrive not found");
+        }
+    }
+
+    public int countByMonth(int year, int month) {
+
+        int count = 0;
+        for (TestDrive testDrive : testDrivesStorage) {
+
+            if (testDrive.getStartTime().getYear() == year
+                    && testDrive.getStartTime().getMonthValue() == month) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    public void printReport(int startYear, int startMonth, int endYear, int endMonth) {
+
+        String[] names = {"Януари", "Февруари", "Март", "Април", "Май", "Юни",
+                "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"};
+
+        if (startMonth < 1 || startMonth > 12 || endMonth < 1 || endMonth > 12) {
+            System.out.println("Месецът трябва да е между 1 и 12.");
+            return;
+        }
+
+        if (startYear > endYear || (startYear == endYear && startMonth > endMonth)) {
+            System.out.println("Началният месец трябва да е преди крайния.");
+            return;
+        }
+
+        int year = startYear;
+        int month = startMonth;
+
+        System.out.println("===== СПРАВКА =====");
+
+        while (year < endYear || (year == endYear && month <= endMonth)) {
+
+            int count = countByMonth(year, month);
+            System.out.println(names[month - 1] + " " + year + ": " + count);
+
+            month++;
+            if (month > 12) {
+                month = 1;
+                year++;
+            }
         }
     }
 }
