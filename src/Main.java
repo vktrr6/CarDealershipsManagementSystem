@@ -2,11 +2,11 @@ import cars.Car;
 import cars.CarManager;
 import dealership.Dealership;
 import dealership.DealershipManager;
+import testdrive.TestDrive;
 import testdrive.TestDriveManager;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,7 +17,7 @@ public class Main {
         //Managers
         DealershipManager dealershipManager = new DealershipManager();
         CarManager carManager = new CarManager();
-        TestDriveManager testDriveManager = new TestDriveManager();
+        TestDriveManager testDriveManager = new TestDriveManager(dealershipManager, carManager);
 
 
 
@@ -189,7 +189,8 @@ public class Main {
                                 System.out.print("Избрахте този автосалон: ");
                                 dealershipManager.print(id);
 
-                                dealershipManager.remove(id);
+                                dealershipManager.remove(id, testDriveManager.getAll());
+                                System.out.println("Автосалонът е изтрит.");
                             }
 
                             //addCarToDealership
@@ -393,7 +394,11 @@ public class Main {
                             //remove
                             case 5 -> {
 
+                                System.out.print("Въведете ID на колата: ");
+                                int id = Integer.parseInt(scanner.nextLine());
 
+                                carManager.remove(id, dealershipManager.getAll(), testDriveManager.getAll());
+                                System.out.println("Колата е изтрита.");
                             }
                         }
                     }
@@ -480,7 +485,6 @@ public class Main {
                                         "1. По кола\n" +
                                         "2. По автосалон\n" +
                                         "3. По име на клиент\n" +
-                                        "4. По име на клиент\n" +
                                         "\n" +
                                         "Изберете опция: ");
 
@@ -488,46 +492,40 @@ public class Main {
 
                                 switch (option) {
 
-                                    case 1 -> {
+                                        case 1 -> {
+                                            System.out.print("Въведете ID на колата: ");
+                                            int carId = Integer.parseInt(scanner.nextLine());
 
-                                        System.out.print("Въведете ID на колата: ");
-                                        int carId = Integer.parseInt(scanner.nextLine());
+                                            List<TestDrive> result = testDriveManager.searchByCar(carManager.search(carId));
+                                            printResult(result);
+                                        }
 
-                                        testDriveManager.searchByCar(carManager.search(carId));
-                                    }
+                                        case 2 -> {
+                                            System.out.print("Въведете ID на автосалона: ");
+                                            int dealershipId = Integer.parseInt(scanner.nextLine());
 
-                                    case 2 -> {
+                                            List<TestDrive> result = testDriveManager.searchByDealership(dealershipManager.search(dealershipId));
+                                            printResult(result);
+                                        }
 
-                                        System.out.print("Въведете ID на автосалона: ");
-                                        int dealershipId = Integer.parseInt(scanner.nextLine());
+                                        case 3 -> {
+                                            System.out.print("Въведете името на клиента: ");
+                                            String clientName = scanner.nextLine();
 
-                                        testDriveManager.searchByDealership(dealershipManager.search(dealershipId));
-                                    }
+                                            printResult(testDriveManager.searchByClientName(clientName));
+                                        }
 
-                                    case 3 -> {
+                                        case 4 -> {
+                                            System.out.print("Въведете дата: ");
+                                            LocalDate searchedDate = LocalDate.parse(scanner.nextLine());
 
-                                        System.out.print("Въведете името на клиента: ");
-                                        String clientName = scanner.nextLine();
-
-                                        testDriveManager.searchByClientName(clientName);
-                                    }
-
-                                    case 4 -> {
-
-                                        System.out.print("Въведете дата: ");
-                                        String date = scanner.nextLine();
-                                        LocalDate searchedDate = LocalDate.parse(date);
-
-                                        testDriveManager.searchByDate(searchedDate);
+                                            printResult(testDriveManager.searchByDate(searchedDate));
                                     }
                                 }
                             }
 
-                            //edit
-                            case 5 -> {}
-
                             //remove
-                            case 6 -> {
+                            case 5 -> {
 
                                 System.out.print("Въведете ID на TestDrive: ");
                                 int testDriveId = Integer.parseInt(scanner.nextLine());
@@ -556,6 +554,21 @@ public class Main {
                             }
                         }
                     }
+                }
+
+                //reference
+                case 4 -> {
+
+                    System.out.print("Въведете начална година: ");
+                    int startYear = Integer.parseInt(scanner.nextLine());
+                    System.out.print("Въведете начален месец: ");
+                    int startMonth = Integer.parseInt(scanner.nextLine());
+                    System.out.print("Въведете крайна година: ");
+                    int endYear = Integer.parseInt(scanner.nextLine());
+                    System.out.print("Въведете краен месец: ");
+                    int endMonth = Integer.parseInt(scanner.nextLine());
+
+                    testDriveManager.printReport(startYear, startMonth, endYear, endMonth);
                 }
             }
         }
@@ -619,5 +632,17 @@ public class Main {
                 "0. Назад" +
                 "\n" +
                 "Изберете опция: ");
+    }
+
+    private static void printResult(List<TestDrive> result) {
+
+        if (result.isEmpty()) {
+            System.out.println("Няма намерени тест-драйвове.");
+            return;
+        }
+
+        for (TestDrive t : result) {
+            System.out.println(t);
+        }
     }
 }

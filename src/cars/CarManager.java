@@ -173,15 +173,23 @@ public class CarManager {
         car.setFuelType(fuelType);
     }
 
-    public void remove(int id, Dealership dealership, List<TestDrive> testDrivesStorage) {
+    public void remove(int id, List<Dealership> dealerships, List<TestDrive> testDrives) {
 
-        boolean hasTestDrives = testDrivesStorage.stream().anyMatch(t -> t.getCar().getId() == id);
+        boolean hasTestDrives = testDrives.stream()
+                .anyMatch(t -> t.getCar().getId() == id);
 
-        boolean removedDealer = dealership.getCars().removeIf(c -> c.getId() == id && !hasTestDrives);
-        boolean removedCar = carsStorage.removeIf(c -> c.getId() == id && !hasTestDrives);
+        if (hasTestDrives) {
+            throw new IllegalStateException("Car cannot be removed");
+        }
 
-        if (!removedDealer && !removedCar) {
+        boolean removed = carsStorage.removeIf(c -> c.getId() == id);
+
+        if (!removed) {
             throw new NoSuchElementException("Car not found");
+        }
+
+        for (Dealership d : dealerships) {
+            d.getCars().removeIf(c -> c.getId() == id);
         }
     }
 

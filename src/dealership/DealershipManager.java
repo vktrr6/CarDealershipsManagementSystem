@@ -1,6 +1,7 @@
 package dealership;
 
 import cars.Car;
+import testdrive.TestDrive;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,7 +122,14 @@ public class DealershipManager {
         dealership.setCity(city);
     }
 
-    public void remove(int id) {
+    public void remove(int id, List<TestDrive> testDrives) {
+
+        boolean hasTestDrives = testDrives.stream()
+                .anyMatch(t -> t.getDealership().getId() == id);
+
+        if (hasTestDrives) {
+            throw new IllegalStateException("Автосалонът не може да се изтрие, има тест-драйвове за него.");
+        }
 
         boolean removed = dealershipsStorage.removeIf(d -> d.getId() == id);
 
