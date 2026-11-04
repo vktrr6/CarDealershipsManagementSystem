@@ -516,7 +516,7 @@ public class Main {
                                         }
 
                                         case 4 -> {
-                                            System.out.print("Въведете дата (гггг-мм-дд): ");
+                                            System.out.print("Въведете дата: ");
                                             LocalDate searchedDate = LocalDate.parse(scanner.nextLine());
 
                                             printResult(testDriveManager.searchByDate(searchedDate));
@@ -560,15 +560,15 @@ public class Main {
                 case 4 -> {
 
                     System.out.print("Въведете начална година: ");
-                    int sy = Integer.parseInt(scanner.nextLine());
+                    int startYear = Integer.parseInt(scanner.nextLine());
                     System.out.print("Въведете начален месец: ");
-                    int sm = Integer.parseInt(scanner.nextLine());
+                    int startMonth = Integer.parseInt(scanner.nextLine());
                     System.out.print("Въведете крайна година: ");
-                    int ey = Integer.parseInt(scanner.nextLine());
+                    int endYear = Integer.parseInt(scanner.nextLine());
                     System.out.print("Въведете краен месец: ");
-                    int em = Integer.parseInt(scanner.nextLine());
+                    int endMonth = Integer.parseInt(scanner.nextLine());
 
-                    testDriveManager.printReport(sy, sm, ey, em);
+                    testDriveManager.printReport(startYear, startMonth, endYear, endMonth);
                 }
             }
         }
@@ -635,6 +635,7 @@ public class Main {
     }
 
     private static void printResult(List<TestDrive> result) {
+
         if (result.isEmpty()) {
             System.out.println("Няма намерени тест-драйвове.");
             return;
