@@ -6,6 +6,7 @@ import testdrive.TestDriveManager;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Scanner;
 
@@ -556,10 +557,6 @@ public class Main {
                         }
                     }
                 }
-
-                //reference
-                case 4 -> {}
-
             }
         }
     }
@@ -623,6 +620,4 @@ public class Main {
                 "\n" +
                 "Изберете опция: ");
     }
-
-    public static void reference() {}
 }
