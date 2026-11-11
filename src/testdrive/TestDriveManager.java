@@ -16,11 +16,11 @@ public class TestDriveManager {
     private DealershipManager dealershipManager;
     private CarManager carManager;
 
-    List<TestDrive> testDrivesStorage = new ArrayList<>();
+    private List<TestDrive> testDrivesStorage = new ArrayList<>();
 
     public TestDriveManager(DealershipManager dealershipManager, CarManager carManager) {
-        this.dealershipManager = new DealershipManager();
-        this.carManager = new CarManager();
+        this.dealershipManager = dealershipManager;
+        this.carManager = carManager;
     }
 
     public List<TestDrive> getAll() {
@@ -49,7 +49,7 @@ public class TestDriveManager {
        }
 
         boolean isAvailable = testDrivesStorage.stream()
-                .filter(t -> t.getCar().getId() == carId)
+                .filter(t -> t.getCar().getId() == carId && t.getDealership().getId() == dealershipId)
                 .noneMatch(t -> userStartTime.isBefore(t.getEndTime()) && userEndTime.isAfter(t.getStartTime()));
 
         if (!isAvailable) {

@@ -20,10 +20,26 @@ public class DealershipManager {
 
     public void addCar(int dealershipId, Car car) {
 
+        if (car == null) {
+            throw new NoSuchElementException("Car does not exist");
+        }
+
+        Dealership d = search(dealershipId);
+        if (d == null) throw new NoSuchElementException("Dealership does not exist");
+
+        if (d.getCars().contains(car)) throw new IllegalStateException("Car already exists");
+
         search(dealershipId).getCars().add(car);
     }
 
     public void removeCar(int dealershipId, Car car) {
+
+        if (car == null) {
+            throw new NoSuchElementException("Car does not exist");
+        }
+
+        Dealership d = search(dealershipId);
+        if (d == null) throw new NoSuchElementException("Dealership does not exist");
 
         search(dealershipId).getCars().remove(car);
     }

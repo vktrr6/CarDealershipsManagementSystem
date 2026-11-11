@@ -12,30 +12,39 @@ import java.util.NoSuchElementException;
 public class CarManager {
 
     private List<Car> carsStorage = new ArrayList<>();
+    private DealershipManager dealershipManager;
 
-
+    public CarManager(DealershipManager dealershipManager) {
+        this.dealershipManager = dealershipManager;
+    }
 
     public void add(Car car) {
+
+        int currentYear = LocalDate.now().getYear();
+
+        if (car.getYear() < 1900 || car.getYear() > currentYear) {
+            throw new IllegalArgumentException("Year cannot be before 1900 or after " + currentYear);
+        }
 
         carsStorage.add(car);
     }
 
     public void addToDealership(int carId, int dealershipId) {
 
-        DealershipManager dealershipManager = new DealershipManager();
+        Car car = search(carId);
 
-        carsStorage.stream()
-                .filter(car -> car.getId() == carId)
-                .forEach(car -> dealershipManager.addCar(dealershipId, car));
+        if (car == null) throw new NoSuchElementException("Car does not exist");
+
+        dealershipManager.addCar(dealershipId, car);
     }
 
     public void removeFromDealership(int carId, int dealershipId) {
 
-        DealershipManager dealershipManager = new DealershipManager();
+        Car car = search(carId);
 
-        carsStorage.stream()
-                .filter(car -> car.getId() == carId)
-                .forEach(car -> dealershipManager.removeCar(dealershipId, car));
+        if (car == null) throw new NoSuchElementException("Car does not exist");
+
+        dealershipManager.removeCar(dealershipId, car);
     }
 
     public void printAll() {
@@ -151,7 +160,7 @@ public class CarManager {
 
         int currentYear = LocalDate.now().getYear();
 
-        if (year < 1900 || year <= currentYear) {
+        if (year < 1900 || year > currentYear) {
             throw new IllegalArgumentException("Year cannot be before 1900 or after " + currentYear);
         }
 

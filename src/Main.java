@@ -8,6 +8,7 @@ import testdrive.TestDriveManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main {
@@ -16,7 +17,7 @@ public class Main {
 
         //Managers
         DealershipManager dealershipManager = new DealershipManager();
-        CarManager carManager = new CarManager();
+        CarManager carManager = new CarManager(dealershipManager);
         TestDriveManager testDriveManager = new TestDriveManager(dealershipManager, carManager);
 
 
@@ -254,6 +255,10 @@ public class Main {
                                 System.out.println("В кой салон искате да я вкарате\n" + "Въведете ID на автосалона: ");
                                 int dealershipId = Integer.parseInt(scanner.nextLine());
 
+                                if (dealershipManager.search(dealershipId) == null) {
+                                    throw new NoSuchElementException("Dealership does not exist");
+                                }
+
                                 Car car = new Car(carBrand, carModel, carYear, carFuelType);
 
                                 carManager.add(car);
@@ -272,7 +277,7 @@ public class Main {
                                         "По какво искате да търсите:\n" +
                                         "1. По бранд\n" +
                                         "2. По модел\n" +
-                                        "2. По година\n" +
+                                        "3. По година\n" +
                                         "\n" +
                                         "Изберете опция: ");
 
@@ -485,6 +490,7 @@ public class Main {
                                         "1. По кола\n" +
                                         "2. По автосалон\n" +
                                         "3. По име на клиент\n" +
+                                        "4. По дата\n" +
                                         "\n" +
                                         "Изберете опция: ");
 
@@ -496,16 +502,26 @@ public class Main {
                                             System.out.print("Въведете ID на колата: ");
                                             int carId = Integer.parseInt(scanner.nextLine());
 
-                                            List<TestDrive> result = testDriveManager.searchByCar(carManager.search(carId));
-                                            printResult(result);
+                                            Car car = carManager.search(carId);
+
+                                            if (car == null) {
+                                                System.out.println("Автомобилът не е намерен.");
+                                            } else {
+                                                printResult(testDriveManager.searchByCar(car));
+                                            }
                                         }
 
                                         case 2 -> {
                                             System.out.print("Въведете ID на автосалона: ");
                                             int dealershipId = Integer.parseInt(scanner.nextLine());
 
-                                            List<TestDrive> result = testDriveManager.searchByDealership(dealershipManager.search(dealershipId));
-                                            printResult(result);
+                                            Dealership dealership = dealershipManager.search(dealershipId);
+
+                                            if (dealership == null) {
+                                                System.out.println("Автосалонът не е намерен.");
+                                            } else {
+                                                printResult(testDriveManager.searchByDealership(dealership));
+                                            }
                                         }
 
                                         case 3 -> {
