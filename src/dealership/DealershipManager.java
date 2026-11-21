@@ -12,7 +12,6 @@ public class DealershipManager {
     private List<Dealership> dealershipsStorage = new ArrayList<>();
 
 
-
     public void add(Dealership dealership) {
 
         dealershipsStorage.add(dealership);
@@ -29,7 +28,7 @@ public class DealershipManager {
 
         if (d.getCars().contains(car)) throw new IllegalStateException("Car already exists");
 
-        search(dealershipId).getCars().add(car);
+        d.getCars().add(car);
     }
 
     public void removeCar(int dealershipId, Car car) {
@@ -41,7 +40,7 @@ public class DealershipManager {
         Dealership d = search(dealershipId);
         if (d == null) throw new NoSuchElementException("Dealership does not exist");
 
-        search(dealershipId).getCars().remove(car);
+        d.getCars().remove(car);
     }
 
     public void printAll() {
@@ -57,9 +56,9 @@ public class DealershipManager {
 
         Dealership dealership = search(id);
 
-            if (dealership == null) {
-                throw new NullPointerException("Dealership not found");
-            }
+        if (dealership == null) {
+            throw new NullPointerException("Dealership not found");
+        }
 
         System.out.printf("%s - %s: %n", dealership.getName(), dealership.getCity());
 
@@ -144,7 +143,7 @@ public class DealershipManager {
                 .anyMatch(t -> t.getDealership().getId() == id);
 
         if (hasTestDrives) {
-            throw new IllegalStateException("Автосалонът не може да се изтрие, има тест-драйвове за него.");
+            throw new IllegalStateException("Dealership cannot be removed, it has Test Drives on it");
         }
 
         boolean removed = dealershipsStorage.removeIf(d -> d.getId() == id);
