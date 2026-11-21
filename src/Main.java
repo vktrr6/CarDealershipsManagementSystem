@@ -190,8 +190,25 @@ public class Main {
                                 System.out.print("Избрахте този автосалон: ");
                                 dealershipManager.print(id);
 
-                                dealershipManager.remove(id, testDriveManager.getAll());
-                                System.out.println("Автосалонът е изтрит.");
+                                System.out.print(
+                                        "Искате ли да продължите:\n" +
+                                                "1. Да\n" +
+                                                "2. Не" +
+                                                "\n" +
+                                                "Изберете опция: ");
+
+                                int yesNo = Integer.parseInt(scanner.nextLine());
+
+                                switch (yesNo) {
+
+                                    case 1 -> {
+
+                                        dealershipManager.remove(id, testDriveManager.getAll());
+                                        System.out.println("Автосалонът е изтрит.");
+                                    }
+
+                                    case 2 -> {}
+                                }
                             }
 
                             //addCarToDealership
@@ -200,10 +217,59 @@ public class Main {
                                 System.out.print("Въведете ID на колата: ");
                                 int carId = Integer.parseInt(scanner.nextLine());
 
-                                System.out.print("Въведете ID на салона: ");
-                                int dealershipId = Integer.parseInt(scanner.nextLine());
+                                if (carManager.search(carId) == null) {
+                                    System.out.println("Автомобилът не е намерен.");
+                                    break;
+                                }
 
-                                carManager.addToDealership(carId, dealershipId);
+                                System.out.print("Избрахте тази кола: ");
+                                carManager.print(carId);
+
+                                System.out.print(
+                                        "Искате ли да продължите:\n" +
+                                                "1. Да\n" +
+                                                "2. Не" +
+                                                "\n" +
+                                                "Изберете опция: ");
+
+                                int yesNo = Integer.parseInt(scanner.nextLine());
+
+                                switch (yesNo) {
+
+                                    case 1 -> {
+
+                                        System.out.print("Въведете ID на салона: ");
+                                        int dealershipId = Integer.parseInt(scanner.nextLine());
+
+                                        if (dealershipManager.search(dealershipId) == null) {
+                                            System.out.println("Автосалонът не е намерен.");
+                                            break;
+                                        }
+
+                                        System.out.print("Избрахте този автосалон: ");
+                                        dealershipManager.print(dealershipId);
+
+                                System.out.print(
+                                        "Искате ли да продължите:\n" +
+                                                "1. Да\n" +
+                                                "2. Не" +
+                                                "\n" +
+                                                "Изберете опция: ");
+
+                                int yesNo2 = Integer.parseInt(scanner.nextLine());
+
+                                switch (yesNo2) {
+
+                                    case 1 -> {
+                                        carManager.addToDealership(carId, dealershipId);
+                                    }
+
+                                    case 2 -> {}
+                                        }
+                                    }
+
+                                    case 2 -> {}
+                                }
                             }
 
                             //removeCarFromDealership
@@ -212,10 +278,60 @@ public class Main {
                                 System.out.print("Въведете ID на колата: ");
                                 int carId = Integer.parseInt(scanner.nextLine());
 
-                                System.out.print("Въведете ID на салона: ");
-                                int dealershipId = Integer.parseInt(scanner.nextLine());
+                                if (carManager.search(carId) == null) {
+                                    System.out.println("Автомобилът не е намерен.");
+                                    break;
+                                }
 
-                                carManager.removeFromDealership(carId, dealershipId);
+                                System.out.print("Избрахте тази кола: ");
+                                carManager.print(carId);
+
+                                System.out.print(
+                                        "Искате ли да продължите:\n" +
+                                                "1. Да\n" +
+                                                "2. Не" +
+                                                "\n" +
+                                                "Изберете опция: ");
+
+                                int yesNo = Integer.parseInt(scanner.nextLine());
+
+                                switch (yesNo) {
+
+                                    case 1 -> {
+
+                                        System.out.print("Въведете ID на салона: ");
+
+                                        int dealershipId = Integer.parseInt(scanner.nextLine());
+
+                                        if (dealershipManager.search(dealershipId) == null) {
+                                            System.out.println("Автосалонът не е намерен.");
+                                            break;
+                                        }
+
+                                        System.out.print("Избрахте този автосалон: ");
+                                        dealershipManager.print(dealershipId);
+
+                                        System.out.print(
+                                                "Искате ли да продължите:\n" +
+                                                        "1. Да\n" +
+                                                        "2. Не" +
+                                                        "\n" +
+                                                        "Изберете опция: ");
+
+                                        int yesNo2 = Integer.parseInt(scanner.nextLine());
+
+                                        switch (yesNo2) {
+
+                                            case 1 -> {
+                                                carManager.removeFromDealership(carId, dealershipId);
+                                            }
+
+                                            case 2 -> {}
+                                        }
+                                    }
+
+                                    case 2 -> {}
+                                }
                             }
                         }
                     }
@@ -255,14 +371,35 @@ public class Main {
                                 System.out.println("В кой салон искате да я вкарате\n" + "Въведете ID на автосалона: ");
                                 int dealershipId = Integer.parseInt(scanner.nextLine());
 
-                                if (dealershipManager.search(dealershipId) == null) {
-                                    throw new NoSuchElementException("Dealership does not exist");
+                                System.out.print("Избрахте този автосалон: ");
+                                dealershipManager.print(dealershipId);
+
+                                System.out.print(
+                                        "Искате ли да продължите:\n" +
+                                                "1. Да\n" +
+                                                "2. Не" +
+                                                "\n" +
+                                                "Изберете опция: ");
+
+                                int yesNo = Integer.parseInt(scanner.nextLine());
+
+                                switch (yesNo) {
+
+                                    case 1 -> {
+
+                                        if (dealershipManager.search(dealershipId) == null) {
+                                            System.out.println("Автосалонът не е намерен.");
+                                            break;
+                                        }
+
+                                        Car car = new Car(carBrand, carModel, carYear, carFuelType);
+
+                                        carManager.add(car);
+                                        carManager.addToDealership(car.getId(), dealershipId);
+                                    }
+
+                                    case 2 -> {}
                                 }
-
-                                Car car = new Car(carBrand, carModel, carYear, carFuelType);
-
-                                carManager.add(car);
-                                carManager.addToDealership(car.getId(), dealershipId);
                             }
 
                             //printAll
@@ -402,8 +539,26 @@ public class Main {
                                 System.out.print("Въведете ID на колата: ");
                                 int id = Integer.parseInt(scanner.nextLine());
 
-                                carManager.remove(id, dealershipManager.getAll(), testDriveManager.getAll());
-                                System.out.println("Колата е изтрита.");
+                                System.out.print("Избрахте тази кола: ");
+                                carManager.print(id);
+
+                                System.out.print(
+                                        "Искате ли да продължите:\n" +
+                                                "1. Да\n" +
+                                                "2. Не" +
+                                                "\n" +
+                                                "Изберете опция: ");
+
+                                int yesNo = Integer.parseInt(scanner.nextLine());
+
+                                switch (yesNo) {
+
+                                    case 1 -> {
+                                        carManager.remove(id, dealershipManager.getAll(), testDriveManager.getAll());
+                                        System.out.println("Колата е изтрита.");
+                                    }
+                                    case 2 -> {}
+                                }
                             }
                         }
                     }
